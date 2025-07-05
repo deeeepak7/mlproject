@@ -13,7 +13,7 @@ from source.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path = os.path.join('artifact', "preprocessor.pkl")
+    preprocessor_obj_file_path: str = os.path.join('artifact', "preprocessor.pkl")
 
 class DataTransformation:
     """This is used for data transformation"""
@@ -39,7 +39,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(
                 steps=[
                     ("imputer", SimpleImputer(strategy="most_frequent")),
-                    ("one_hot_encoder", OneHotEncoder(handle_unknown="ignore")),
+                    ("one_hot_encoder", OneHotEncoder(handle_unknown="ignore", drop="first")),
                     ("scaler", StandardScaler(with_mean=False))
                 ]
             )

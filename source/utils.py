@@ -5,7 +5,7 @@ import pandas as pd
 import pickle
 from source.exception import customException
 from sklearn.metrics import r2_score
-from sklearn.model_selection import GridSearchCV
+
 def save_object(file_path, obj):
     try:
         dir_path = os.path.dirname(file_path)
@@ -20,29 +20,25 @@ def save_object(file_path, obj):
     
 
 
-def evaluate_models(x_train,y_train,x_test,y_test,models,params):
-    """for evalutaing the model on basis of r2 score"""
+def evaluate_models(x_train, y_train, x_test, y_test, models):
+    """for evaluating the model on basis of r2 score"""
     try:
-        report={}
+        report = {}
         for i in range(len(list(models))):
-            model =list(models.values())[i]
-            params=list(params.values())[i]
+            model = list(models.values())[i]
+            
+            # Train the model with default parameters
+            model.fit(x_train, y_train)
 
+            y_train_pred = model.predict(x_train)
+            y_test_pred = model.predict(x_test)
+            train_model_score = r2_score(y_train, y_train_pred)
+            test_model_score = r2_score(y_test, y_test_pred)
+            report[list(models.keys())[i]] = test_model_score
 
-            gs=GridSearchCV(model,params,cv=3)
-            gs.fit(x_train,y_train)
-            model.set_params(**gs.best_params_)
-            model.fit(x_train,y_train)
-
-            y_train_pred=model.predict(x_train)
-            y_test_pred=model.predict(x_test)
-            train_model_score=r2_score(y_train,y_train_pred)
-            test_model_score=r2_score(y_test,y_test_pred)
-            report[list(models.keys())[i]]=test_model_score
-
-            return report
+        return report
     except Exception as e:
-        raise customException(e,sys) 
+        raise customException(e, sys)
     
 
 def load_object(file_path):
