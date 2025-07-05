@@ -25,10 +25,10 @@ class DataTransformation:
             numerical_columns = ["writing_score", "reading_score"]
             categorical_columns = [
                 "gender",
-                "race_ethnicity",
-                "parental_level_of_education",
-                "lunch",
-                "test_preparation_course"
+                 "race_ethnicity",
+                 "parental_level_of_education",
+                 "lunch",
+                 "test_preparation_course"
             ]
             num_pipeline = Pipeline(
                 steps=[
@@ -39,7 +39,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(
                 steps=[
                     ("imputer", SimpleImputer(strategy="most_frequent")),
-                    ("one_hot_encoder", OneHotEncoder()),
+                    ("one_hot_encoder", OneHotEncoder(handle_unknown="ignore")),
                     ("scaler", StandardScaler(with_mean=False))
                 ]
             )
