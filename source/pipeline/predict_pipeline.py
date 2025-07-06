@@ -59,8 +59,11 @@ class CustomData:
                 "lunch",
                 "test_preparation_course"
             ]
-            
-           
+            """
+            for col in categorical_columns:
+                if col in df.columns:
+                    df[col] = df[col].fillna('unknown')
+            """
             return df
         except Exception as e:
             raise customException(e, sys)
